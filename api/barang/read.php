@@ -1,23 +1,18 @@
 <?php
-// Header wajib untuk API RESTful
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
-// Memanggil file konfigurasi dan model
 include_once '../../config/Database.php';
 include_once '../../models/Barang.php';
 
-// Inisialisasi database dan objek Barang
 $database = new Database();
 $db = $database->getConnection();
 $barang = new Barang($db);
 
-// Eksekusi fungsi read()
 $stmt = $barang->read();
 $num = $stmt->rowCount();
 
 if($num > 0) {
-    // Array penampung data
     $barang_arr = array();
     $barang_arr["pesan"] = "Data inventaris ditemukan";
     $barang_arr["data"] = array();
@@ -33,7 +28,6 @@ if($num > 0) {
         array_push($barang_arr["data"], $barang_item);
     }
 
-    // Ubah ke format JSON
     http_response_code(200);
     echo json_encode($barang_arr);
 } else {
